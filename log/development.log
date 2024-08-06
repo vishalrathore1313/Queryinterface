@@ -1,0 +1,569 @@
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2024-08-05 07:56:23.211764', '2024-08-05 07:56:23.211767') RETURNING "key"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateCities (20240805075140)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE TABLE "cities" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20240805075140') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateDepartments (20240805075207)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "departments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20240805075207') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateEmployees (20240805075240)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE TABLE "employees" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "email" varchar, "city_id" integer NOT NULL, "department_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_62b53adb68"
+FOREIGN KEY ("city_id")
+  REFERENCES "cities" ("id")
+, CONSTRAINT "fk_rails_0025f65a97"
+FOREIGN KEY ("department_id")
+  REFERENCES "departments" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_employees_on_city_id" ON "employees" ("city_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_employees_on_department_id" ON "employees" ("department_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20240805075240') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateProgrammingLanguages (20240805075303)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (7.9ms)[0m  [1m[35mCREATE TABLE "programming_languages" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20240805075303') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateTableEmployeeProgrammingLanguage (20240805075522)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (2.1ms)[0m  [1m[35mCREATE TABLE "table_employee_programming_languages" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "employee_id" integer NOT NULL, "programming_language_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_91e863e0ee"
+FOREIGN KEY ("employee_id")
+  REFERENCES "employees" ("id")
+, CONSTRAINT "fk_rails_9b3464bf97"
+FOREIGN KEY ("programming_language_id")
+  REFERENCES "programming_languages" ("id")
+)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_table_employee_programming_languages_on_employee_id" ON "table_employee_programming_languages" ("employee_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "idx_on_programming_language_id_7158210b44" ON "table_employee_programming_languages" ("programming_language_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20240805075522') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Create (1.7ms)[0m  [1m[32mINSERT INTO "cities" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "indore"], ["created_at", "2024-08-05 08:03:33.177826"], ["updated_at", "2024-08-05 08:03:33.177826"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Create (0.6ms)[0m  [1m[32mINSERT INTO "cities" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "khandwa"], ["created_at", "2024-08-05 08:03:42.029832"], ["updated_at", "2024-08-05 08:03:42.029832"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Create (1.2ms)[0m  [1m[32mINSERT INTO "cities" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "dewas"], ["created_at", "2024-08-05 08:03:51.001162"], ["updated_at", "2024-08-05 08:03:51.001162"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Create (1.0ms)[0m  [1m[32mINSERT INTO "cities" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "khargaon"], ["created_at", "2024-08-05 08:04:20.065040"], ["updated_at", "2024-08-05 08:04:20.065040"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mDepartment Create (0.4ms)[0m  [1m[32mINSERT INTO "departments" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "HR"], ["created_at", "2024-08-05 08:05:04.265552"], ["updated_at", "2024-08-05 08:05:04.265552"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mDepartment Create (0.9ms)[0m  [1m[32mINSERT INTO "departments" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "Sale"], ["created_at", "2024-08-05 08:05:21.313779"], ["updated_at", "2024-08-05 08:05:21.313779"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mDepartment Create (1.0ms)[0m  [1m[32mINSERT INTO "departments" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "Backend"], ["created_at", "2024-08-05 08:05:51.650150"], ["updated_at", "2024-08-05 08:05:51.650150"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mDepartment Create (0.9ms)[0m  [1m[32mINSERT INTO "departments" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "Frontend"], ["created_at", "2024-08-05 08:06:01.042180"], ["updated_at", "2024-08-05 08:06:01.042180"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mDepartment Load (0.4ms)[0m  [1m[34mSELECT "departments".* FROM "departments" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Load (0.4ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mDepartment Load (0.1ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mEmployee Create (0.2ms)[0m  [1m[32mINSERT INTO "employees" ("name", "email", "city_id", "department_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "Vishal"], ["email", "vishal@gamil.com"], ["city_id", 2], ["department_id", 3], ["created_at", "2024-08-05 08:10:17.381900"], ["updated_at", "2024-08-05 08:10:17.381900"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mDepartment Load (0.0ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mEmployee Create (0.1ms)[0m  [1m[32mINSERT INTO "employees" ("name", "email", "city_id", "department_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "tanvi"], ["email", "tanvi@gamil.com"], ["city_id", 4], ["department_id", 4], ["created_at", "2024-08-05 08:11:09.384497"], ["updated_at", "2024-08-05 08:11:09.384497"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Load (0.0ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mEmployee Create (0.1ms)[0m  [1m[32mINSERT INTO "employees" ("name", "email", "city_id", "department_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "neha"], ["email", "neha@gamil.com"], ["city_id", 1], ["department_id", 1], ["created_at", "2024-08-05 08:11:36.348733"], ["updated_at", "2024-08-05 08:11:36.348733"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Load (0.5ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mDepartment Load (0.0ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mEmployee Create (0.1ms)[0m  [1m[32mINSERT INTO "employees" ("name", "email", "city_id", "department_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "mohit"], ["email", "mohit@gamil.com"], ["city_id", 3], ["department_id", 2], ["created_at", "2024-08-05 08:12:43.673736"], ["updated_at", "2024-08-05 08:12:43.673736"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mProgrammingLanguage Create (0.3ms)[0m  [1m[32mINSERT INTO "programming_languages" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "java"], ["created_at", "2024-08-05 08:14:10.056874"], ["updated_at", "2024-08-05 08:14:10.056874"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mProgrammingLanguage Create (0.9ms)[0m  [1m[32mINSERT INTO "programming_languages" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "ruby"], ["created_at", "2024-08-05 08:14:16.344791"], ["updated_at", "2024-08-05 08:14:16.344791"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mProgrammingLanguage Create (0.9ms)[0m  [1m[32mINSERT INTO "programming_languages" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "python"], ["created_at", "2024-08-05 08:14:24.648715"], ["updated_at", "2024-08-05 08:14:24.648715"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mProgrammingLanguage Create (0.3ms)[0m  [1m[32mINSERT INTO "programming_languages" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "JS"], ["created_at", "2024-08-05 08:14:36.104656"], ["updated_at", "2024-08-05 08:14:36.104656"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "Vishal"], ["LIMIT", 1]]
+  [1m[36mProgrammingLanguage Load (0.3ms)[0m  [1m[34mSELECT "programming_languages".* FROM "programming_languages" WHERE "programming_languages"."name" = ? LIMIT ?[0m  [["name", "java"], ["LIMIT", 1]]
+  [1m[36mProgrammingLanguage Load (0.2ms)[0m  [1m[34mSELECT "programming_languages".* FROM "programming_languages" WHERE "programming_languages"."name" = ? LIMIT ?[0m  [["name", "java"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "Vishal"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mProgrammingLanguage Load (0.2ms)[0m  [1m[34mSELECT "programming_languages".* FROM "programming_languages" WHERE "programming_languages"."name" = ? LIMIT ?[0m  [["name", "java"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "Vishal"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "Vishal"], ["LIMIT", 1]]
+  [1m[36mProgrammingLanguage Load (0.3ms)[0m  [1m[34mSELECT "programming_languages".* FROM "programming_languages" WHERE "programming_languages"."name" = ? LIMIT ?[0m  [["name", "java"], ["LIMIT", 1]]
+  [1m[36mProgrammingLanguage Load (0.1ms)[0m  [1m[34mSELECT "programming_languages".* FROM "programming_languages" WHERE "programming_languages"."id" = ?[0m  [["id", 1]]
+  [1m[36mProgrammingLanguage Load (0.3ms)[0m  [1m[34mSELECT "programming_languages".* FROM "programming_languages" INNER JOIN "employees_programming_languages" ON "programming_languages"."id" = "employees_programming_languages"."programming_language_id" WHERE "employees_programming_languages"."employee_id" = ?[0m  [["employee_id", 1]]
+  [1m[36mEmployee Load (0.5ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.6ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" IN (?, ?)[0m  [["id", 1], ["id", 4]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" LIMIT ?[0m  [["LIMIT", 2]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" ORDER BY "employees"."id" ASC LIMIT ?[0m  [["LIMIT", 2]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" ORDER BY "employees"."id" DESC LIMIT ?[0m  [["LIMIT", 2]]
+  [1m[36mEmployee Load (0.6ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ ORDER BY 2 LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.7ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ ORDER BY "employees"."name" ASC LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.6ms)[0m  [1m[34mSELECT "employees".* FROM "employees" ORDER BY "employees"."name" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" ORDER BY "employees"."name" ASC LIMIT ?[0m  [["LIMIT", 4]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "Vishal"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "Vishal"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "Vishal"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "Vishal"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mEmployee Update (1.1ms)[0m  [1m[33mUPDATE "employees" SET "name" = ?, "updated_at" = ? WHERE "employees"."id" = ?[0m  [["name", "vishal"], ["updated_at", "2024-08-05 08:53:38.373393"], ["id", 1]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" ORDER BY "employees"."name" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" ORDER BY "employees"."name" ASC LIMIT ?[0m  [["LIMIT", 4]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mDepartment Load (0.1ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mEmployee Create (0.2ms)[0m  [1m[32mINSERT INTO "employees" ("name", "email", "city_id", "department_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "mohit"], ["email", "mohit123@gamil.com"], ["city_id", 3], ["department_id", 2], ["created_at", "2024-08-05 08:57:01.424405"], ["updated_at", "2024-08-05 08:57:01.424405"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? /* loading for pp */ LIMIT ?[0m  [["name", "mohit"], ["LIMIT", 11]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mDepartment Load (0.0ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mEmployee Create (0.1ms)[0m  [1m[32mINSERT INTO "employees" ("name", "email", "city_id", "department_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "mohit"], ["email", "mohit123@gamil.com"], ["city_id", 4], ["department_id", 4], ["created_at", "2024-08-05 08:58:46.129228"], ["updated_at", "2024-08-05 08:58:46.129228"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? /* loading for pp */ LIMIT ?[0m  [["name", "mohit"], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? AND "employees"."city_id" = ? /* loading for pp */ LIMIT ?[0m  [["name", "mohit"], ["city_id", 4], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."name" = ? /* loading for pp */ LIMIT ?[0m  [["name", "indore"], ["LIMIT", 11]]
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."name" = ? /* loading for inspect */ LIMIT ?[0m  [["name", "indore"], ["LIMIT", 11]]
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."name" = ? /* loading for inspect */ LIMIT ?[0m  [["name", "indore"], ["LIMIT", 11]]
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."name" = ? /* loading for inspect */ LIMIT ?[0m  [["name", "indore"], ["LIMIT", 11]]
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."name" = ? /* loading for inspect */ LIMIT ?[0m  [["name", "indore"], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? /* loading for pp */ LIMIT ?[0m  [["name", "neha"], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees"[0m
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees"[0m
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" ORDER BY "employees"."id" ASC LIMIT ?[0m  [["LIMIT", 2]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" > ? ORDER BY "employees"."id" ASC LIMIT ?[0m  [["id", 2], ["LIMIT", 2]]
+  [1m[36mEmployee Load (0.0ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" > ? ORDER BY "employees"."id" ASC LIMIT ?[0m  [["id", 4], ["LIMIT", 2]]
+  [1m[36mEmployee Load (0.0ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" > ? ORDER BY "employees"."id" ASC LIMIT ?[0m  [["id", 6], ["LIMIT", 2]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" ORDER BY "employees"."id" ASC LIMIT ?[0m  [["LIMIT", 2]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" > ? ORDER BY "employees"."id" ASC LIMIT ?[0m  [["id", 2], ["LIMIT", 2]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" > ? ORDER BY "employees"."id" ASC LIMIT ?[0m  [["id", 4], ["LIMIT", 2]]
+  [1m[36mEmployee Load (0.0ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" > ? ORDER BY "employees"."id" ASC LIMIT ?[0m  [["id", 6], ["LIMIT", 2]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" ORDER BY "employees"."id" ASC LIMIT ?[0m  [["LIMIT", 2]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" > ? ORDER BY "employees"."id" ASC LIMIT ?[0m  [["id", 2], ["LIMIT", 2]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" > ? ORDER BY "employees"."id" ASC LIMIT ?[0m  [["id", 4], ["LIMIT", 2]]
+  [1m[36mEmployee Load (0.0ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" > ? ORDER BY "employees"."id" ASC LIMIT ?[0m  [["id", 6], ["LIMIT", 2]]
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."name" = ? LIMIT ?[0m  [["name", "indore"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."city_id" = ? ORDER BY "employees"."id" ASC LIMIT ?[0m  [["city_id", 1], ["LIMIT", 2]]
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."name" = ? LIMIT ?[0m  [["name", "khandwa"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."city_id" = ? /* loading for pp */ LIMIT ?[0m  [["city_id", 2], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id" WHERE (cities.name = 'khargoan')[0m
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id" WHERE (cities.name = 'khargoan')[0m
+  [1m[36mEmployee Load (1.0ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."employee_id" NOT IN (?, ?, ?) /* loading for pp */ LIMIT ?[0m  [["employee_id", 6], ["employee_id", 4], ["employee_id", 2], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.9ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."employee_id" NOT IN (?, ?, ?) /* loading for pp */ LIMIT ?[0m  [["employee_id", 6], ["employee_id", 4], ["employee_id", 2], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" NOT IN (?, ?, ?) /* loading for pp */ LIMIT ?[0m  [["id", 6], ["id", 4], ["id", 2], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" NOT IN (?, ?, ?) /* loading for inspect */ LIMIT ?[0m  [["id", 6], ["id", 4], ["id", 2], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."department_id" = ? /* loading for pp */ LIMIT ?[0m  [["department_id", nil], ["LIMIT", 11]]
+  [1m[36mDepartment Load (0.3ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."name" = ? LIMIT ?[0m  [["name", "java"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."department_id" IS NULL /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mDepartment Load (0.1ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."name" = ? LIMIT ?[0m  [["name", "Java"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."department_id" IS NULL /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mDepartment Load (0.2ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."name" = ? LIMIT ?[0m  [["name", "HR"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."department_id" = ? /* loading for pp */ LIMIT ?[0m  [["department_id", 1], ["LIMIT", 11]]
+  [1m[36mProgrammingLanguage Load (0.3ms)[0m  [1m[34mSELECT "programming_languages".* FROM "programming_languages" WHERE "programming_languages"."name" = ? LIMIT ?[0m  [["name", "HR"], ["LIMIT", 1]]
+  [1m[36mProgrammingLanguage Load (0.1ms)[0m  [1m[34mSELECT "programming_languages".* FROM "programming_languages" WHERE "programming_languages"."name" = ? LIMIT ?[0m  [["name", "java"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (1.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "programming_languages"."id" = ? /* loading for pp */ LIMIT ?[0m  [["id", 1], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE ("employees"."name" = ? OR "employees"."id" = ?) /* loading for pp */ LIMIT ?[0m  [["name", "vishal"], ["id", 4], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE ("employees"."name" = ? OR "employees"."id" = ?) /* loading for pp */ LIMIT ?[0m  [["name", "mohit"], ["id", 5], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE ("employees"."id" = ? OR "employees"."name" = ?) /* loading for pp */ LIMIT ?[0m  [["id", 5], ["name", "mohit"], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" = ? AND "employees"."name" = ? /* loading for pp */ LIMIT ?[0m  [["id", 5], ["name", "mohit"], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ ORDER BY "employees"."id" DESC LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.5ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ ORDER BY "employees"."name" ASC, "employees"."id" DESC LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.5ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ ORDER BY "employees"."name" ASC, "employees"."id" ASC LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees"."email" FROM "employees" /* loading for pp */ ORDER BY "employees"."name" ASC, "employees"."id" ASC LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT DISTINCT "employees"."name" FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Load (0.5ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Load (0.1ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mEmployee Create (0.2ms)[0m  [1m[32mINSERT INTO "employees" ("name", "email", "city_id", "department_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "keshav"], ["email", "tanvi@gamil.com"], ["city_id", 1], ["department_id", 3], ["created_at", "2024-08-05 11:31:31.653649"], ["updated_at", "2024-08-05 11:31:31.653649"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mDepartment Load (0.0ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mEmployee Create (0.2ms)[0m  [1m[32mINSERT INTO "employees" ("name", "email", "city_id", "department_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "rahul"], ["email", "rahuli@gamil.com"], ["city_id", 3], ["department_id", 3], ["created_at", "2024-08-05 11:32:08.951221"], ["updated_at", "2024-08-05 11:32:08.951221"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees"."id", "employees"."name", "city" FROM "employees" GROUP BY "city" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees"."id", "employees"."name", "employees"."city_id" FROM "employees" GROUP BY "employees"."city_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees"."id", "employees"."name", "employees"."city_id" FROM "employees" GROUP BY "employees"."city_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Count (0.2ms)[0m  [1m[34mSELECT COUNT(id, name, city_id) AS "count_id_name_city_id", "employees"."city_id" AS "employees_city_id" FROM "employees" GROUP BY "employees"."city_id"[0m
+  [1m[36mEmployee Count (0.3ms)[0m  [1m[34mSELECT COUNT(id,name,city_id) AS "count_id_name_city_id", "employees"."city_id" AS "employees_city_id" FROM "employees" GROUP BY "employees"."city_id"[0m
+  [1m[36mEmployee Count (0.2ms)[0m  [1m[34mSELECT COUNT(id,name,city_id) AS "count_id_name_city_id", "employees"."city_id" AS "employees_city_id" FROM "employees" GROUP BY "employees"."city_id"[0m
+  [1m[36mEmployee Load (0.6ms)[0m  [1m[34mSELECT id,name FROM "employees" GROUP BY "employees"."city_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT id,name,count(id) FROM "employees" GROUP BY "employees"."city_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT id,name,count(id) as total_emp FROM "employees" GROUP BY "employees"."city_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT id,name,count(id) as total_emp FROM "employees" GROUP BY "employees"."city_id" HAVING (count(id)>2) /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT id,name,count(city_id) as total_emp FROM "employees" GROUP BY "employees"."city_id" HAVING (count(id)>2) /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT id,name,count(city_id) as total_emp FROM "employees" GROUP BY "employees"."city_id" HAVING (count(city_id)>2) /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT id>2 FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT id>7 FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT id>10 FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE (id>2) /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE (id>2) /* loading for pp */ LIMIT ?[0m  [["LIMIT", 2]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE (id>2) /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT id,name FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT id,name, "employees"."city_id" FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees"."city_id" FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT id,name FROM "employees" /* loading for pp */ ORDER BY id DESC LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT id,name FROM "employees" /* loading for pp */ ORDER BY id ASC LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT id,name FROM "employees" /* loading for pp */ ORDER BY id DESC LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT id,name FROM "employees" WHERE (id<2) /* loading for pp */ ORDER BY id DESC LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT id,name FROM "employees" WHERE (id>2) /* loading for pp */ ORDER BY id DESC LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT id,name FROM "employees" WHERE (id>2) AND (id>5) /* loading for pp */ ORDER BY id DESC LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT id,name FROM "employees" GROUP BY "employees"."id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT id,name FROM "employees" GROUP BY "employees"."name" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT count(id),name FROM "employees" GROUP BY "employees"."name" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT count(city_id),city_id FROM "employees" GROUP BY "employees"."name" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT count(city_id),city_id FROM "employees" GROUP BY "employees"."id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT sum(city_id),city_id FROM "employees" GROUP BY "employees"."id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.8ms)[0m  [1m[34mSELECT "employees".* FROM "employees" ORDER BY "employees"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" ORDER BY "employees"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to Addnewcolumn (20240805132244)
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to Addnewcolumn (20240805132244)
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to Addnewcolumn (20240805132244)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "employees" ADD "lock_version" integer DEFAULT 0 NOT NULL[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20240805132244') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mDepartment Load (0.1ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Load (0.3ms)[0m  [1m[34mSELECT "departments".* FROM "departments" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mDepartment Load (0.1ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mDepartment Load (0.4ms)[0m  [1m[34mSELECT "departments".* FROM "departments" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mDepartment Load (0.3ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mDepartment Update (1.0ms)[0m  [1m[33mUPDATE "departments" SET "name" = ?, "updated_at" = ? WHERE "departments"."id" = ?[0m  [["name", "RRR"], ["updated_at", "2024-08-05 13:31:20.175412"], ["id", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mDepartment Load (0.2ms)[0m  [1m[34mSELECT "departments".* FROM "departments" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mDepartment Load (0.2ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mDepartment Update (0.8ms)[0m  [1m[33mUPDATE "departments" SET "name" = ?, "updated_at" = ? WHERE "departments"."id" = ?[0m  [["name", "HR"], ["updated_at", "2024-08-05 13:32:27.375551"], ["id", 1]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mDepartment Load (0.3ms)[0m  [1m[34mSELECT "departments".* FROM "departments" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mEmployee Update (1.2ms)[0m  [1m[33mUPDATE "employees" SET "name" = ?, "updated_at" = ?, "lock_version" = ? WHERE "employees"."id" = ? AND "employees"."lock_version" = ?[0m  [["name", "piyush"], ["updated_at", "2024-08-05 13:34:52.426709"], ["lock_version", 1], ["id", 1], ["lock_version", 0]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mEmployee Update (0.8ms)[0m  [1m[33mUPDATE "employees" SET "name" = ?, "updated_at" = ?, "lock_version" = ? WHERE "employees"."id" = ? AND "employees"."lock_version" = ?[0m  [["name", "vishal"], ["updated_at", "2024-08-05 13:35:45.857530"], ["lock_version", 2], ["id", 1], ["lock_version", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mEmployee Update (0.8ms)[0m  [1m[33mUPDATE "employees" SET "name" = ?, "updated_at" = ?, "lock_version" = ? WHERE "employees"."id" = ? AND "employees"."lock_version" = ?[0m  [["name", "piyush"], ["updated_at", "2024-08-05 13:38:39.355867"], ["lock_version", 3], ["id", 1], ["lock_version", 2]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id"[0m
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT employees.*,departments.name AS dpn FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT employees.*,departments.name AS dpn FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id"[0m
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT employees.*,departments.name AS dpn FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT employees.*,departments.name AS dpn FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id"[0m
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT employees.name AS nm,departments.name AS dpn FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT employees.name AS nm,departments.name AS dpn FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id"[0m
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT employees.name AS nm,departments.name AS dpn,city.name as city FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT employees.name AS nm,departments.name AS dpn,cities.name as city FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT employees.name AS nm,departments.name AS dpn,cities.name as city FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id"[0m
+  [1m[36mEmployee Load (2.0ms)[0m  [1m[34mSELECT employees.name AS nm,departments.name AS dpn,cities.name AS  city FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT employees.name AS nm,departments.name AS dpn,cities.name AS  city FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id"[0m
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT employees.name AS nm,departments.name AS dpn,cities.name AS  city FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT employees.name AS nm,departments.name AS dpn,cities.name AS  city FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id"[0m
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT employees.name AS nm,departments.name AS dpn,cities.name AS ctn FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT employees.name AS nm,departments.name AS dpn,cities.name AS ctn FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id"[0m
+  [1m[36mEmployee Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "employees"[0m
+  [1m[36mEmployee Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "employees" WHERE "employees"."name" = ?[0m  [["name", "mohit"]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? /* loading for pp */ LIMIT ?[0m  [["name", "mohit"], ["LIMIT", 11]]
+  [1m[36mEmployee Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "employees" WHERE "employees"."name" = ?[0m  [["name", "mohit"]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT employees.name AS e_name,departments.name AS d_name,cities.name AS c_name FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT employees.name AS e_name,departments.name AS d_name,cities.name AS c_name FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id"[0m
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Create (1.3ms)[0m  [1m[32mINSERT INTO "cities" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "mumbai"], ["created_at", "2024-08-06 05:56:47.489689"], ["updated_at", "2024-08-06 05:56:47.489689"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Create (0.9ms)[0m  [1m[32mINSERT INTO "cities" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "delhi"], ["created_at", "2024-08-06 05:56:59.009478"], ["updated_at", "2024-08-06 05:56:59.009478"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Create (0.9ms)[0m  [1m[32mINSERT INTO "cities" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "kolkata"], ["created_at", "2024-08-06 05:57:45.322573"], ["updated_at", "2024-08-06 05:57:45.322573"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Create (0.9ms)[0m  [1m[32mINSERT INTO "cities" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "ujjain"], ["created_at", "2024-08-06 05:58:08.755360"], ["updated_at", "2024-08-06 05:58:08.755360"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Create (0.9ms)[0m  [1m[32mINSERT INTO "cities" ("name", "created_at", "updated_at") VALUES (?, ?, ?) RETURNING "id"[0m  [["name", "raipur"], ["created_at", "2024-08-06 05:58:21.787356"], ["updated_at", "2024-08-06 05:58:21.787356"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "cities"[0m
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT cities.name AS c_name,employees.name AS e_name FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.4ms)[0m  [1m[34mSELECT cities.name AS c_name,employees.name AS e_name FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id"[0m
+  [1m[36mCity Load (0.4ms)[0m  [1m[34mSELECT DISTINCT cities.name AS c_name,employees.name AS e_name FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.4ms)[0m  [1m[34mSELECT DISTINCT cities.name AS c_name,employees.name AS e_name FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id"[0m
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT DISTINCT cities.name AS c_name,employees.name AS e_name FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id" GROUP BY "citites"."name" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT DISTINCT cities.name AS c_name,employees.name AS e_name FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id" GROUP BY c_name /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT DISTINCT cities.name AS c_name,employees.name AS e_name FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id" GROUP BY c_name[0m
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT DISTINCT cities.name AS c_name,COUNT(employees.name) AS e_total FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id" GROUP BY c_name /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT DISTINCT cities.name AS c_name,COUNT(employees.name) AS e_total FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id" GROUP BY c_name[0m
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT cities.name AS c_name,employees.name AS e_name FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT cities.name AS c_name,employees.name AS e_name FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id"[0m
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT cities.name AS c_name,COUNT(employees.name) AS e_total FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id" GROUP BY c_name /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT cities.name AS c_name,COUNT(employees.id) AS e_total FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id" GROUP BY c_name /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT cities.name AS c_name,COUNT(employees.id) AS e_total FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id" GROUP BY c_name[0m
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT cities.name AS c_name,COUNT(employees.id) AS e_total FROM "cities" INNER JOIN "employees" ON "employees"."city_id" = "cities"."id" GROUP BY c_name /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.4ms)[0m  [1m[34mSELECT cities.name AS c_name,COUNT(employees.id) AS e_total FROM "cities" INNER JOIN "employees" ON "employees"."city_id" = "cities"."id" GROUP BY c_name[0m
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT cities.name AS c_name,COUNT(employees.id) AS e_total FROM "cities" INNER JOIN "employees" ON "employees"."city_id" = "cities"."id" WHERE "employees"."id" IS NOT NULL /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT cities.name AS c_name,COUNT(employees.id) AS e_total FROM "cities" INNER JOIN "employees" ON "employees"."city_id" = "cities"."id" WHERE "employees"."id" IS NOT NULL[0m
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT cities.name AS c_name FROM "cities" INNER JOIN "employees" ON "employees"."city_id" = "cities"."id" WHERE "employees"."id" IS NOT NULL /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT cities.name AS c_name FROM "cities" INNER JOIN "employees" ON "employees"."city_id" = "cities"."id" WHERE "employees"."id" IS NOT NULL[0m
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT DISTINCT cities.name AS c_name FROM "cities" INNER JOIN "employees" ON "employees"."city_id" = "cities"."id" WHERE "employees"."id" IS NOT NULL /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT DISTINCT cities.name AS c_name FROM "cities" INNER JOIN "employees" ON "employees"."city_id" = "cities"."id" WHERE "employees"."id" IS NOT NULL[0m
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT DISTINCT cities.name AS c_name FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id" WHERE "employees"."id" IS NULL /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT DISTINCT cities.name AS c_name FROM "cities" LEFT OUTER JOIN "employees" ON "employees"."city_id" = "cities"."id" WHERE "employees"."id" IS NULL[0m
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees"[0m
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mCity Load (0.0ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mCity Load (0.0ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCity Load (0.0ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mCity Load (0.0ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mCity Load (0.0ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mCity Load (0.0ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCity Load (0.0ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" IN (?, ?, ?, ?)[0m  [["id", 2], ["id", 4], ["id", 1], ["id", 3]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees"[0m
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" IN (?, ?, ?, ?)[0m  [["id", 2], ["id", 4], ["id", 1], ["id", 3]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE (employees.id%2==0) /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" IN (?, ?)[0m  [["id", 4], ["id", 3]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE (employees.id%2==0)[0m
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" IN (?, ?)[0m  [["id", 4], ["id", 3]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.5ms)[0m  [1m[34mSELECT "employees".* FROM "employees"[0m
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees"[0m
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE (employees.id%2==0) /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" IN (?, ?)[0m  [["id", 4], ["id", 3]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE (employees.id%2==0)[0m
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" IN (?, ?)[0m  [["id", 4], ["id", 3]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees"[0m
+  [1m[36mCity Load (0.6ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees"[0m
+  [1m[36mEmployee Load (0.6ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE (employees.id%2==0) /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" IN (?, ?)[0m  [["id", 4], ["id", 3]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE (employees.id%2==0) /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" IN (?, ?)[0m  [["id", 4], ["id", 3]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" IN (?, ?, ?, ?)[0m  [["id", 2], ["id", 4], ["id", 1], ["id", 3]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" IN (?, ?, ?, ?)[0m  [["id", 2], ["id", 4], ["id", 1], ["id", 3]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees"[0m
+  [1m[36mCity Load (0.4ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" IN (?, ?, ?, ?)[0m  [["id", 2], ["id", 4], ["id", 1], ["id", 3]]
+  [1m[36mCity Load (0.4ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE (created_at >= '2024-08-04 09:12:45.034202') /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.1ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE (created_at >= '2024-08-05 09:13:09.074419') /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.4ms)[0m  [1m[34mSELECT "cities".* FROM "cities" INNER JOIN "employees" ON "employees"."city_id" = "cities"."id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" INNER JOIN "employees" ON "employees"."city_id" = "cities"."id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? /* loading for pp */ LIMIT ?[0m  [["name", "mohit"], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? AND "employees"."name" = ? LIMIT ?[0m  [["name", "mohit"], ["name", "vishal"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? AND "employees"."name" = ? LIMIT ?[0m  [["name", "mohit"], ["name", "vishal"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? AND "employees"."name" = ? LIMIT ?[0m  [["name", "mohit"], ["name", "vishal"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? AND "employees"."name" = ? LIMIT ?[0m  [["name", "mohit"], ["name", "vishal"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? AND "employees"."name" = ? LIMIT ?[0m  [["name", "mohit"], ["name", "vishal"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? AND "employees"."name" = ? LIMIT ?[0m  [["name", "mohit"], ["name", "mohit"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? AND "employees"."name" = ? LIMIT ?[0m  [["name", "mohit"], ["name", "vishal"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? /* loading for pp */ LIMIT ?[0m  [["name", "mohit"], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."city_id" = ? LIMIT ?[0m  [["city_id", 3], ["LIMIT", 1]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to Addstatus (20240806101917)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "employees" ADD "status" integer DEFAULT 0[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20240806101917') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Load (0.2ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mDepartment Load (0.1ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mEmployee Create (0.2ms)[0m  [1m[32mINSERT INTO "employees" ("name", "email", "city_id", "department_id", "created_at", "updated_at", "lock_version", "status") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "virat"], ["email", "virat@gmail.com"], ["city_id", 7], ["department_id", 3], ["created_at", "2024-08-06 10:31:36.889340"], ["updated_at", "2024-08-06 10:31:36.889340"], ["lock_version", 0], ["status", 0]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.5ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" = ? LIMIT ?[0m  [["id", 9], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" = ? LIMIT ?[0m  [["id", 9], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mDepartment Load (0.0ms)[0m  [1m[34mSELECT "departments".* FROM "departments" WHERE "departments"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mEmployee Create (0.2ms)[0m  [1m[32mINSERT INTO "employees" ("name", "email", "city_id", "department_id", "created_at", "updated_at", "lock_version", "status") VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "rohit"], ["email", "virat@gmail.com"], ["city_id", 7], ["department_id", 3], ["created_at", "2024-08-06 10:34:12.092860"], ["updated_at", "2024-08-06 10:34:12.092860"], ["lock_version", 0], ["status", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."status" = ? /* loading for pp */ LIMIT ?[0m  [["status", 1], ["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT employees.name,cities.name,employees.status FROM "employees" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT employees.email,cities.name,employees.status FROM "employees" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT employees.name,employees.email,cities.name,employees.status FROM "employees" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? /* loading for pp */ LIMIT ?[0m  [["name", "mohit"], ["LIMIT", 11]]
+  [1m[36mEmployee Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "employees" WHERE "employees"."name" = ?[0m  [["name", "mohit"]]
+  [1m[36mEmployee Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "employees"[0m
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? AND "employees"."name" = ? LIMIT ?[0m  [["name", "mohit"], ["name", "vikas"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? /* loading for pp */ LIMIT ?[0m  [["name", "mohit"], ["LIMIT", 11]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "rahul"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "vikas"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "vivek"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "vivek"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" = ? AND "employees"."name" = ? LIMIT ?[0m  [["id", 11], ["name", "vivek"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" = ? LIMIT ?[0m  [["id", 11], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."id" = ? AND "employees"."name" = ? LIMIT ?[0m  [["id", 11], ["name", "vivek"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.8ms)[0m  [1m[34mselect* from emplyees[0m
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mselect* from employees[0m
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mselect* from employees where name="piyush"[0m
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mselect* from employees[0m
+  [1m[35m (0.4ms)[0m  [1m[34mselect* from employees[0m
+  [1m[36mEmployee Pluck (0.1ms)[0m  [1m[34mSELECT "employees"."id" FROM "employees"[0m
+  [1m[36mEmployee Pluck (0.3ms)[0m  [1m[34mSELECT "employees"."name" FROM "employees"[0m
+  [1m[36mEmployee Pluck (0.2ms)[0m  [1m[34mSELECT "employees"."id" FROM "employees"[0m
+  [1m[36mEmployee Pluck (0.3ms)[0m  [1m[34mSELECT "city" FROM "employees"[0m
+  [1m[36mEmployee Pluck (0.3ms)[0m  [1m[34mSELECT "employees"."id", "employees"."name" FROM "employees"[0m
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees"."name" FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Pluck (0.7ms)[0m  [1m[34mSELECT "city" FROM "employees"[0m
+  [1m[36mEmployee Pluck (0.2ms)[0m  [1m[34mSELECT "employees"."name" FROM "employees"[0m
+  [1m[36mEmployee Pluck (0.3ms)[0m  [1m[34mSELECT "employees"."name" FROM "employees" WHERE "employees"."id" = ?[0m  [["id", 1]]
+  [1m[36mEmployee Pluck (0.1ms)[0m  [1m[34mSELECT "employees"."id" FROM "employees" WHERE "employees"."name" = ?[0m  [["name", "mohit"]]
+  [1m[36mEmployee Pluck (0.3ms)[0m  [1m[34mSELECT "employees"."id" FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "mohit"], ["LIMIT", 1]]
+  [1m[36mEmployee Ids (0.2ms)[0m  [1m[34mSELECT "employees"."id" FROM "employees"[0m
+  [1m[36mEmployee Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "employees" LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mEmployee Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "employees" WHERE "employees"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[36mEmployee Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "employees" WHERE "employees"."id" IN (?, ?, ?) LIMIT ?[0m  [["id", 6], ["id", 5], ["id", 3], ["LIMIT", 1]]
+  [1m[36mEmployee Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "employees" WHERE "employees"."id" IN (?, ?, ?, ?) LIMIT ?[0m  [["id", 6], ["id", 5], ["id", 3], ["id", 22], ["LIMIT", 1]]
+  [1m[36mEmployee Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "vikas"], ["LIMIT", 1]]
+  [1m[36mEmployee Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "rahul"], ["LIMIT", 1]]
+  [1m[36mEmployee Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "employees"[0m
+  [1m[36mEmployee Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "employees" WHERE "employees"."name" = ?[0m  [["name", "mohit"]]
+  [1m[36mEmployee Count (0.4ms)[0m  [1m[34mSELECT COUNT(DISTINCT "employees"."id") FROM "employees" WHERE "employees"."name" = ?[0m  [["name", "rahul"]]
+  [1m[36mEmployee Count (0.3ms)[0m  [1m[34mSELECT COUNT(DISTINCT "employees"."id") FROM "employees"[0m
+  [1m[36mEmployee Count (0.2ms)[0m  [1m[34mSELECT COUNT((employees.name).distinct) FROM "employees"[0m
+  [1m[36mEmployee Count (0.2ms)[0m  [1m[34mSELECT COUNT(DISTINCT "employees"."name") FROM "employees"[0m
+  [1m[36mCity Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "cities"[0m
+  [1m[36mCity Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "cities" INNER JOIN "employees" ON "employees"."city_id" = "cities"."id"[0m
+  [1m[36mCity Count (0.4ms)[0m  [1m[34mSELECT COUNT(DISTINCT "cities"."id") FROM "cities" INNER JOIN "employees" ON "employees"."city_id" = "cities"."id"[0m
+  [1m[36mCity Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "cities"[0m
+  [1m[36mCity Sum (0.3ms)[0m  [1m[34mSELECT SUM(0) FROM "cities"[0m
+  [1m[36mCity Average (0.3ms)[0m  [1m[34mSELECT AVG("cities"."id") FROM "cities"[0m
+  [1m[36mCity Average (0.2ms)[0m  [1m[34mSELECT AVG("cities"."id") FROM "cities"[0m
+  [1m[36mEmployee Average (0.3ms)[0m  [1m[34mSELECT AVG("employees"."id") FROM "employees"[0m
+  [1m[36mEmployee Average (0.3ms)[0m  [1m[34mSELECT AVG("employees"."city_id") FROM "employees"[0m
+  [1m[36mEmployee Maximum (0.3ms)[0m  [1m[34mSELECT MAX("employees"."id") FROM "employees"[0m
+  [1m[36mEmployee Minimum (0.3ms)[0m  [1m[34mSELECT MIN("employees"."id") FROM "employees"[0m
+  [1m[36mEmployee Sum (0.3ms)[0m  [1m[34mSELECT SUM("employees"."id") FROM "employees"[0m
+  [1m[36mEmployee Average (0.2ms)[0m  [1m[34mSELECT AVG("employees"."id") FROM "employees"[0m
+  [1m[36mEmployee Count (0.1ms)[0m  [1m[34mSELECT COUNT(DISTINCT "employees"."name") FROM "employees"[0m
+  [1m[36mEmployee Count (0.3ms)[0m  [1m[34mSELECT COUNT(DISTINCT "employees"."name") FROM "employees"[0m
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees"[0m
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees"[0m
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "rahul"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "rahul"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.4ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE (employees.id%2==0)[0m
+  [1m[36mCity Load (0.3ms)[0m  [1m[34mSELECT "cities".* FROM "cities" WHERE "cities"."id" IN (?, ?, ?)[0m  [["id", 4], ["id", 3], ["id", 7]]
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT employees.name AS nm,departments.name AS dpn,city.name as city FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" INNER JOIN "cities" ON "cities"."id" = "employees"."city_id"[0m
+  [1m[36mEmployee Load (0.5ms)[0m  [1m[34mSELECT employees.*,departments.name AS dpn FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.6ms)[0m  [1m[34mSELECT employees.*,departments.name AS dpn FROM "employees" INNER JOIN "departments" ON "departments"."id" = "employees"."department_id"[0m
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "piyush"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mEmployee Update (0.8ms)[0m  [1m[33mUPDATE "employees" SET "name" = ?, "updated_at" = ?, "lock_version" = ? WHERE "employees"."id" = ? AND "employees"."lock_version" = ?[0m  [["name", "vishal"], ["updated_at", "2024-08-06 13:19:07.723832"], ["lock_version", 4], ["id", 1], ["lock_version", 3]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.5ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "vishal"], ["LIMIT", 1]]
+  [1m[36mEmployee Load (0.2ms)[0m  [1m[34mSELECT "employees".* FROM "employees" WHERE "employees"."name" = ? LIMIT ?[0m  [["name", "vishal"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mEmployee Update (0.8ms)[0m  [1m[33mUPDATE "employees" SET "name" = ?, "updated_at" = ?, "lock_version" = ? WHERE "employees"."id" = ? AND "employees"."lock_version" = ?[0m  [["name", "vishal1"], ["updated_at", "2024-08-06 13:20:51.566728"], ["lock_version", 5], ["id", 1], ["lock_version", 4]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mEmployee Update (0.8ms)[0m  [1m[33mUPDATE "employees" SET "name" = ?, "updated_at" = ?, "lock_version" = ? WHERE "employees"."id" = ? AND "employees"."lock_version" = ?[0m  [["name", "vishal2"], ["updated_at", "2024-08-06 13:21:10.630991"], ["lock_version", 5], ["id", 1], ["lock_version", 4]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mEmployee Load (0.1ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mEmployee Load (0.9ms)[0m  [1m[34mSELECT "employees".* FROM "employees" ORDER BY "employees"."id" ASC LIMIT ? [0m  [["LIMIT", 1]]
+  [1m[36mEmployee Update (0.2ms)[0m  [1m[33mUPDATE "employees" SET "name" = ?, "updated_at" = ?, "lock_version" = ? WHERE "employees"."id" = ? AND "employees"."lock_version" = ?[0m  [["name", "vishal"], ["updated_at", "2024-08-06 13:26:33.909028"], ["lock_version", 6], ["id", 1], ["lock_version", 5]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mEmployee Load (0.3ms)[0m  [1m[34mSELECT "employees".* FROM "employees" /* loading for pp */ LIMIT ?[0m  [["LIMIT", 11]]
